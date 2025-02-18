@@ -7,15 +7,25 @@ import { GiPadlock } from "react-icons/gi"
 import { useForm } from "react-hook-form"
 import { loginSchema, LoginSchema } from "@/lib/schemas/login-schema"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { signInUser } from "@/actions/auth-actions"
+import { useRouter } from "next/navigation"
+import { toast } from "react-toastify"
 
 export default function LoginForm() {
-  const { register, handleSubmit, formState: { errors, isValid } } = useForm<LoginSchema>({
+  const router = useRouter()
+  const { register, handleSubmit, formState: { errors, isValid, isSubmitting } } = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     mode: 'onTouched'
   })
 
-  function onSubmit(data: LoginSchema) {
-    console.log(data)
+  async function onSubmit(data: LoginSchema) {
+    const result = await signInUser(data)
+
+    if (result.status === 'success') {
+      router.push('/members')
+    } else {
+      toast.error(result.error as string)
+    }
   }
   return (
     <Card className="w-2/5 mx-auto">
@@ -47,7 +57,7 @@ export default function LoginForm() {
               defaultValue="" isInvalid={!!errors.password}
               errorMessage={errors.password?.message}
             />
-            <Button isDisabled={!isValid} fullWidth color="secondary" type='submit'>Login</Button>
+            <Button isLoading={isSubmitting} isDisabled={!isValid} fullWidth color="secondary" type='submit'>Login</Button>
           </div>
         </form>
       </CardBody>

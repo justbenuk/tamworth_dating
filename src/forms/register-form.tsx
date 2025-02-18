@@ -7,15 +7,29 @@ import { GiPadlock } from "react-icons/gi"
 import { useForm } from "react-hook-form"
 import { registerSchema, RegisterSchema } from "@/lib/schemas/register-schema"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { registerUserAction } from "@/actions/auth-actions"
 
 export default function LoginForm() {
-  const { register, handleSubmit, formState: { errors, isValid } } = useForm<RegisterSchema>({
+  const { register, handleSubmit, setError, formState: { errors, isValid, isSubmitting } } = useForm<RegisterSchema>({
     resolver: zodResolver(registerSchema),
     mode: 'onTouched'
   })
 
-  function onSubmit(data: RegisterSchema) {
-    console.log(data)
+  async function onSubmit(data: RegisterSchema) {
+    const result = await registerUserAction(data)
+
+    if (result.status === 'success') {
+      console.log('User has registered')
+    } else {
+      if (Array.isArray(result.error)) {
+        result.error.forEach((e) => {
+          const fieldName = e.path.join('.') as 'email' | 'name' | 'password'
+          setError(fieldName, { message: e.message })
+        })
+      } else {
+        setError('root.serverError', { message: result.error })
+      }
+    }
   }
   return (
     <Card className="w-2/5 mx-auto">
@@ -55,7 +69,10 @@ export default function LoginForm() {
               defaultValue="" isInvalid={!!errors.password}
               errorMessage={errors.password?.message}
             />
-            <Button isDisabled={!isValid} fullWidth color="secondary" type='submit'>Login</Button>
+            {errors.root?.serverError && (
+              <p className="text-danger text-sm">{errors.root.serverError.message}</p>
+            )}
+            <Button isLoading={isSubmitting} isDisabled={!isValid} fullWidth color="secondary" type='submit'>Login</Button>
           </div>
         </form>
       </CardBody>
