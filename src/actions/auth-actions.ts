@@ -6,8 +6,13 @@ import { db } from "@/lib/db";
 import { ActionResult } from "@/types.index";
 import { User } from "@prisma/client";
 import { LoginSchema } from "@/lib/schemas/login-schema";
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
 import { AuthError } from "next-auth";
+
+export async function signOutUserAction() {
+  await signOut({ redirectTo: '/' })
+
+}
 
 export async function signInUser(data: LoginSchema): Promise<ActionResult<string>> {
   try {
