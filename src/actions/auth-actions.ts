@@ -6,7 +6,7 @@ import { db } from "@/lib/db";
 import { ActionResult } from "@/types.index";
 import { User } from "@prisma/client";
 import { LoginSchema } from "@/lib/schemas/login-schema";
-import { signIn, signOut } from "@/auth";
+import { auth, signIn, signOut } from "@/auth";
 import { AuthError } from "next-auth";
 
 export async function signOutUserAction() {
@@ -88,4 +88,13 @@ export async function getUserById(id: string) {
   return db.user.findUnique({
     where: { id }
   })
+}
+
+export async function getAuthUserId() {
+  const session = await auth()
+  const userId = session?.user?.id
+
+  if (!userId) throw new Error('Unauthorised')
+
+  return userId
 }
