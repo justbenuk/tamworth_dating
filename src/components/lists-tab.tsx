@@ -3,8 +3,9 @@
 import { Tabs, Tab } from "@heroui/react"
 import { Member } from "@prisma/client"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { Key } from "react"
+import { Key, useTransition } from "react"
 import MemberItem from "./members/members-item"
+import LoadingComponent from "./loading/loading-component"
 
 type ListTabsProps = {
   members: Member[]
@@ -15,6 +16,7 @@ export default function ListTabs({ members, listIds }: ListTabsProps) {
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
+  const [isPending, startTransition] = useTransition()
 
   const tabs = [
     { id: 'source', label: 'Members I have liked' },
@@ -23,9 +25,11 @@ export default function ListTabs({ members, listIds }: ListTabsProps) {
   ]
 
   function handleTabChange(key: Key) {
-    const params = new URLSearchParams(searchParams)
-    params.set('type', key.toString())
-    router.replace(`${pathname}?${params.toString()}`)
+    startTransition(() => {
+      const params = new URLSearchParams(searchParams)
+      params.set('type', key.toString())
+      router.replace(`${pathname}?${params.toString()}`)
+    })
   }
 
   return (
@@ -38,14 +42,20 @@ export default function ListTabs({ members, listIds }: ListTabsProps) {
       >
         {(item) => (
           <Tab key={item.id} title={item.label}>
-            {members.length > 0 ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-8">
-                {members.map(member => (
-                  <MemberItem key={member.id} member={member} likeIds={listIds} />
-                ))}
-              </div>
+            {isPending ? (
+              <LoadingComponent />
             ) : (
-              <div>No Memebrs for this filter</div>
+              <>
+                {members.length > 0 ? (
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-8">
+                    {members.map(member => (
+                      <MemberItem key={member.id} member={member} likeIds={listIds} />
+                    ))}
+                  </div>
+                ) : (
+                  <div>No Memebrs for this filter</div>
+                )}
+              </>
             )}
           </Tab>
         )}
