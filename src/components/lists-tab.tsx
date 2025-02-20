@@ -1,5 +1,4 @@
 'use client'
-
 import { Tabs, Tab } from "@heroui/react"
 import { Member } from "@prisma/client"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
