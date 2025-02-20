@@ -3,8 +3,8 @@ import { notFound } from "next/navigation"
 import { CardBody, CardHeader } from "@heroui/card"
 import { Divider } from "@heroui/divider"
 export default async function MemberPage({ params }: { params: { userId: string } }) {
-
-  const member = await getMemberByIdAction(params.userId)
+  const { userId } = await params
+  const member = await getMemberByIdAction(userId)
 
   if (!member) return notFound()
 

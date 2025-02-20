@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { ReactNode } from "react";
 import { Card } from "@heroui/card";
 export default async function MembersLayout({ children, params }: { children: ReactNode, params: { userId: string } }) {
-  const member = await getMemberByIdAction(params.userId)
+  const { userId } = await params
+  const member = await getMemberByIdAction(userId)
 
   if (!member) return notFound()
 
