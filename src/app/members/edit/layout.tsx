@@ -3,16 +3,20 @@ import MembersSidebar from "@/components/members/members-sidebar";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
 import { Card } from "@heroui/card";
-export default async function MembersLayout({ children, params }: { children: ReactNode, params: { userId: string } }) {
-  const { userId } = await params
+import { getAuthUserId } from "@/actions/auth-actions";
+
+export default async function MembersLayout({ children }: { children: ReactNode }) {
+
+  const userId = await getAuthUserId()
   const member = await getMemberByIdAction(userId)
-  const basePath = `/members/${member?.userId}`
+
+  const basePath = `/members/edit`
+
   if (!member) return notFound()
 
   const navLinks = [
-    { name: 'Profile', href: `${basePath}` },
-    { name: 'Photos', href: `${basePath}/photos` },
-    { name: 'Chat', href: `${basePath}/chat` }
+    { name: 'Edit Profile', href: `${basePath}` },
+    { name: 'Update Photos', href: `${basePath}/photos` },
   ]
 
   return (

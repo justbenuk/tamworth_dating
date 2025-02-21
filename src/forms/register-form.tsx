@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form"
 import { registerSchema, RegisterSchema } from "@/lib/schemas/register-schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { registerUserAction } from "@/actions/auth-actions"
+import { handleFormServerErrors } from "@/lib/utils"
 
 export default function LoginForm() {
   const { register, handleSubmit, setError, formState: { errors, isValid, isSubmitting } } = useForm<RegisterSchema>({
@@ -21,14 +22,7 @@ export default function LoginForm() {
     if (result.status === 'success') {
       console.log('User has registered')
     } else {
-      if (Array.isArray(result.error)) {
-        result.error.forEach((e) => {
-          const fieldName = e.path.join('.') as 'email' | 'name' | 'password'
-          setError(fieldName, { message: e.message })
-        })
-      } else {
-        setError('root.serverError', { message: result.error })
-      }
+      handleFormServerErrors(result, setError)
     }
   }
   return (

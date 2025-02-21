@@ -11,14 +11,10 @@ import { Button } from "@heroui/button"
 
 type MemberProps = {
   member: Member
+  navLinks: { name: string, href: string }[]
 }
-export default function MembersSidebar({ member }: MemberProps) {
+export default function MembersSidebar({ member, navLinks }: MemberProps) {
   const basePath = `/members/${member.userId}`
-  const navLinks = [
-    { name: 'Profile', href: `${basePath}` },
-    { name: 'Photos', href: `${basePath}/photos` },
-    { name: 'Chat', href: `${basePath}/chat` }
-  ]
 
   const pathname = usePathname()
 
