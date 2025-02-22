@@ -71,6 +71,13 @@ export async function registerUserAction(data: RegisterSchema): Promise<ActionRe
       }
     })
 
+    if (!user) {
+      return {
+        status: 'error', error: 'something went wrong'
+      }
+    }
+
+
     return { status: 'success', data: user }
   } catch (error) {
     console.log(error)

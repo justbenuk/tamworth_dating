@@ -87,7 +87,7 @@ export default function MemberEditForm({ member }: MemberProps) {
       {errors.root?.serverError && (
         <p className="text-danger text-sm">{errors.root.serverError.message}</p>
       )}
-      <div className="w-full flex flex-end">
+      <div className="w-full flex justify-end">
         <Button type='submit' variant="solid" isDisabled={!isValid || !isDirty} isLoading={isSubmitting} color="secondary">Update Profile</Button>
       </div>
     </form>

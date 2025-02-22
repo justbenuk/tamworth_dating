@@ -1,6 +1,7 @@
 'use client'
 import { signOutUserAction } from "@/actions/auth-actions"
 import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger } from "@heroui/react"
+import { User } from "@prisma/client"
 import { Session } from "next-auth"
 import Link from "next/link"
 
@@ -8,6 +9,7 @@ type UserProps = {
   user: Session['user']
 }
 export default function UserMenu({ user }: UserProps) {
+
   return (
     <Dropdown placement="bottom-end">
       <DropdownTrigger>
