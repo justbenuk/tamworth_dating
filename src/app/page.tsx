@@ -1,11 +1,12 @@
 import { Button } from "@heroui/button";
 import { FaRegSmile } from "react-icons/fa";
 import { auth, signOut } from "@/auth";
+import PageContainer from "@/components/page-container";
 
 export default async function Home() {
   const session = await auth()
   return (
-    <div>
+    <PageContainer>
       <h1>user session data:</h1>
       {session ? (
         <div>
@@ -20,6 +21,6 @@ export default async function Home() {
       ) : (
         <div>Not signed in</div>
       )}
-    </div>
+    </PageContainer>
   );
 }

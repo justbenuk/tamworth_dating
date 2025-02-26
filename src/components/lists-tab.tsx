@@ -36,11 +36,24 @@ export default function ListTabs({ members, listIds }: ListTabsProps) {
       <Tabs
         aria-label="Like tabs"
         items={tabs}
-        color="secondary"
+        classNames={{
+          tabList: [
+            'flex',
+            'flex-col',
+            'w-full',
+            'md:flex-row'
+          ],
+          tab: [
+            'bg-red-500',
+          ],
+          tabContent: [
+            'text-white'
+          ]
+        }}
         onSelectionChange={(key) => handleTabChange(key)}
       >
         {(item) => (
-          <Tab key={item.id} title={item.label}>
+          <Tab key={item.id} title={item.label} className="flex foex-col lg:flex-row items-center justify-center">
             {isPending ? (
               <LoadingComponent />
             ) : (
@@ -52,13 +65,13 @@ export default function ListTabs({ members, listIds }: ListTabsProps) {
                     ))}
                   </div>
                 ) : (
-                  <div>No Memebrs for this filter</div>
+                  <div className="font-semibold text-xl">No Memebrs for this filter</div>
                 )}
               </>
             )}
           </Tab>
         )}
       </Tabs>
-    </div>
+    </div >
   )
 }

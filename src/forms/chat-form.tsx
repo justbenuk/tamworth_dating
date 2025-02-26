@@ -45,22 +45,21 @@ export default function ChatForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center justify-center gap-2">
         <Input
           fullWidth
           placeholder="Type a message"
           variant="faded"
           {...register("text")}
           isInvalid={!!errors.text}
-          errorMessage={errors.text?.message}
         />
         <Button
           type="submit"
           isIconOnly
-          color="secondary"
           radius="full"
           isLoading={isSubmitting}
           isDisabled={!isValid || isSubmitting}
+          className="bg-red-500 text-white"
         >
           <HiPaperAirplane size={18} />
         </Button>

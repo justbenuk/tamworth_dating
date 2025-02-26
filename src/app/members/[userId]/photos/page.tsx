@@ -7,7 +7,7 @@ export default async function MembersPhotos({ params }: { params: { userId: stri
 
   return (
     <>
-      <CardHeader className="text-2xl font-semibold text-secondary">Profile</CardHeader>
+      <CardHeader className="text-md font-semibold text-red-500">Photos</CardHeader>
       <Divider />
       <CardBody>
         <div className="grid grid-cols-5 gap-3">

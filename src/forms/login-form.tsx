@@ -1,15 +1,16 @@
 'use client'
 
-import { Card, CardBody, CardHeader } from "@heroui/card"
+import { Card, CardBody } from "@heroui/card"
 import { Input } from "@heroui/input"
 import { Button } from "@heroui/button"
-import { GiPadlock } from "react-icons/gi"
 import { useForm } from "react-hook-form"
 import { loginSchema, LoginSchema } from "@/lib/schemas/login-schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { signInUser } from "@/actions/auth-actions"
 import { useRouter } from "next/navigation"
 import { toast } from "react-toastify"
+import Image from "next/image"
+import im from './log.jpg'
 
 export default function LoginForm() {
   const router = useRouter()
@@ -30,38 +31,38 @@ export default function LoginForm() {
     }
   }
   return (
-    <Card className="w-2/5 mx-auto">
-      <CardHeader className="flex flex-col items-center justify-center">
-        <div className="flex flex-col gap-2 items-center text-secondary">
-          <div className="flex flex-row items-center gap-3">
-            <GiPadlock size={30} />
-            <h1 className="text-3xl font-semibold">Login</h1>
-          </div>
-          <p className="text-neutral-500">Welcome back to NextMatch</p>
+    <Card className="w-4/5 mx-auto p-0">
+      <CardBody className="grid grid-cols-1 lg:grid-cols-4 p-0">
+        <div className="col-span-2">
+          <Image src={im} alt='login image' height={300} className="w-full h-full" />
         </div>
-      </CardHeader>
-      <CardBody>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="space-y-4">
-            <Input
-              label='Email'
-              variant="bordered"
-              {...register('email')}
-              defaultValue=""
-              isInvalid={!!errors.email}
-              errorMessage={errors.email?.message}
-            />
-            <Input
-              label='Password'
-              type='password'
-              variant="bordered"
-              {...register('password')}
-              defaultValue="" isInvalid={!!errors.password}
-              errorMessage={errors.password?.message}
-            />
-            <Button isLoading={isSubmitting} isDisabled={!isValid} fullWidth color="secondary" type='submit'>Login</Button>
+        <div className="col-span-2 p-12">
+          <div className="py-4">
+            <h1 className="text-red-500 font-semibold text-xl">Welcome Back</h1>
+            <p className="mt-2">This website was created for fun</p>
           </div>
-        </form>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="space-y-4">
+              <Input
+                label='Email'
+                variant="bordered"
+                {...register('email')}
+                defaultValue=""
+                isInvalid={!!errors.email}
+                errorMessage={errors.email?.message}
+              />
+              <Input
+                label='Password'
+                type='password'
+                variant="bordered"
+                {...register('password')}
+                defaultValue="" isInvalid={!!errors.password}
+                errorMessage={errors.password?.message}
+              />
+              <Button isLoading={isSubmitting} isDisabled={!isValid} fullWidth className="bg-red-500 text-white" type='submit'>Login</Button>
+            </div>
+          </form>
+        </div>
       </CardBody>
     </Card >
   )

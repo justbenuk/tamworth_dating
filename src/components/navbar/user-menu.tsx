@@ -1,7 +1,6 @@
 'use client'
 import { signOutUserAction } from "@/actions/auth-actions"
 import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger } from "@heroui/react"
-import { User } from "@prisma/client"
 import { Session } from "next-auth"
 import Link from "next/link"
 
@@ -17,7 +16,7 @@ export default function UserMenu({ user }: UserProps) {
           isBordered
           as='button'
           className="transition-transform"
-          color='secondary'
+          color="default"
           name={user?.name || 'user'}
           size='sm'
           src={user?.image || '/images/user.png'}

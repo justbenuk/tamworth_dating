@@ -27,7 +27,7 @@ export default function MessageBox({ message, currentUserId }: Props) {
     );
   }
 
-  const messageContentclasses = clsx("flex flex-col w-[50%] px-3 py-1", {
+  const messageContentclasses = clsx("flex flex-col w-full lg:w-[50%] px-3 py-1", {
     "rounded-l-xl rounded-tr-xl text-white bg-blue-100": isCurrentUserSender,
     "rounded-r-xl rounded-tl-xl border-gray-200 bg-green-100":
       !isCurrentUserSender,
@@ -42,7 +42,7 @@ export default function MessageBox({ message, currentUserId }: Props) {
           })}
         >
           {message.dateRead && message.recipientId !== currentUserId ? (
-            <span className="text-xs text-black text-italic">
+            <span className="text-xs text-black text-italic hidden sm:block">
               (Read 4 mins ago)
             </span>
           ) : (

@@ -11,7 +11,7 @@ export default async function PhotosPage() {
   const member = await getMemberByIdAction(userId)
   return (
     <>
-      <CardHeader className="text-2xl font-semibold text-secondary"> Edit Profile</CardHeader>
+      <CardHeader className="text-md font-semibold text-red-500">Change Photos</CardHeader>
       <Divider />
       <CardBody>
         <MemberPhotoUpload />

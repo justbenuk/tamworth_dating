@@ -14,7 +14,7 @@ export default function MessageSidebar() {
   const router = useRouter();
   const pathname = usePathname();
 
-  function handleSelect(key: any) {
+  function handleSelect(key: string) {
     setSelected(key);
     const params = new URLSearchParams();
     params.set("container", key);

@@ -9,5 +9,5 @@ type NavlinkProps = {
 }
 export default function NavLink({ href, label }: NavlinkProps) {
   const pathname = usePathname()
-  return <NavbarItem isActive={pathname === href} as={Link} href={href}>{label}</NavbarItem>
+  return <NavbarItem as={Link} href={href} className={`${pathname === href ? 'text-red-500 font-semibold' : 'text-md'}`}>{label}</NavbarItem>
 }

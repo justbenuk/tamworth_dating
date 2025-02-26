@@ -67,8 +67,8 @@ export async function registerUserAction(data: RegisterSchema): Promise<ActionRe
       data: {
         name,
         email,
-        passwordHash: hashedPassword
-      }
+        passwordHash: hashedPassword,
+      },
     })
 
     if (!user) {
@@ -76,7 +76,6 @@ export async function registerUserAction(data: RegisterSchema): Promise<ActionRe
         status: 'error', error: 'something went wrong'
       }
     }
-
 
     return { status: 'success', data: user }
   } catch (error) {

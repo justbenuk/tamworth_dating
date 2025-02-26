@@ -68,7 +68,7 @@ export default function MessageTable({ messages }: Props) {
       case 'recipientName':
       case 'senderName':
         return (
-          <div className="lex items-center gap-2 cursor-pointer">
+          <div className="flex items-center gap-2 cursor-pointer">
             <Avatar alt="image of member" src={(isOutbox ? item.recipientImage : item.senderImage) || '/images/user.png'} />
             <span>{cellValue}</span>
           </div>
@@ -90,7 +90,7 @@ export default function MessageTable({ messages }: Props) {
   }, [isOutbox, isDeleting.id, isDeleting.loading, handleDeleteMessage])
 
   return (
-    <Card className="flex flex-col gap-3 h-[80dvh] overflow-auto">
+    <Card shadow="none" className="flex flex-col gap-3 h-[80dvh] overflow-auto w-full">
       <Table aria-label="messages table" selectionMode="single" onRowAction={(key) => handleRowSelect(key)} shadow="none">
         <TableHeader columns={columns}>
           {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
