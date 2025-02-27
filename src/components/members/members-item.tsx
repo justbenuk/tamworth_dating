@@ -1,22 +1,23 @@
-'use client'
-import { calculateAge } from "@/lib/utils"
-import { Card, CardFooter } from "@heroui/card"
-import { Image } from "@heroui/image"
-import { Member } from "@prisma/client"
-import Link from "next/link"
-import LikeButton from "./like-button"
+"use client";
+import { calculateAge } from "@/lib/utils";
+import { Card, CardFooter } from "@heroui/card";
+import { Image } from "@heroui/image";
+import { Member } from "@prisma/client";
+import Link from "next/link";
+import LikeButton from "./like-button";
+import PresenceDot from "./presence";
 
 type MemeberItemProps = {
-  member: Member
-  likeIds: string[]
-}
+  member: Member;
+  likeIds: string[];
+};
 
 export default function MemberItem({ member, likeIds }: MemeberItemProps) {
-  const hasLiked = likeIds.includes(member.userId)
+  const hasLiked = likeIds.includes(member.userId);
 
   function preventLinkAction(e: React.MouseEvent) {
-    e.preventDefault()
-    e.stopPropagation()
+    e.preventDefault();
+    e.stopPropagation();
   }
 
   return (
@@ -25,20 +26,25 @@ export default function MemberItem({ member, likeIds }: MemeberItemProps) {
         isZoomed
         alt={member.name}
         width={300}
-        src={member.image || '/images/user.png'}
+        src={member.image || "/images/user.png"}
         className="aspect-square object-cover"
       />
       <div onClick={preventLinkAction}>
         <div className="absolute top-3 right-3 z-50">
           <LikeButton targetId={member.userId} hasLiked={hasLiked} />
         </div>
+        <div className="absolute top-2 left-3 z-50">
+          <PresenceDot member={member} />
+        </div>
       </div>
       <CardFooter className="flex justify-start bg-dark-gradient overflow-hidden absolute bottom-0 z-10">
         <div className="flex flex-col text-white">
-          <span className="font-semibold">{member.name}, {calculateAge(member.dateOfBirth)}</span>
+          <span className="font-semibold">
+            {member.name}, {calculateAge(member.dateOfBirth)}
+          </span>
           <span className="text-sm">{member.city}</span>
         </div>
       </CardFooter>
     </Card>
-  )
+  );
 }

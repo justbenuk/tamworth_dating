@@ -8,6 +8,7 @@ import { Divider } from "@heroui/divider"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Button } from "@heroui/button"
+import PresenceDot from "./presence"
 
 type MemberProps = {
   member: Member
@@ -28,7 +29,12 @@ export default function MembersSidebar({ member, navLinks }: MemberProps) {
       />
       <CardBody>
         <div className="flex flex-col items-center">
-          <div className="text-lg lg:text-2xl text-red-500">{member.name}, {calculateAge(member.dateOfBirth)}</div>
+          <div className="flex">
+            <div className="text-lg lg:text-2xl text-red-500">{member.name}, {calculateAge(member.dateOfBirth)}</div>
+            <div className="relative">
+              <PresenceDot member={member} />
+            </div>
+          </div>
           <div className="text-sm text-neutral-500">{member.city}, {member.country}</div>
         </div>
         <Divider className="my-3 bg-gray-200" />

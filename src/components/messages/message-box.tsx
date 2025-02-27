@@ -2,7 +2,8 @@
 import { MessageDto } from "@/types.index";
 import React, { useEffect, useRef } from "react";
 import clsx from "clsx";
-import { Avatar } from "@heroui/avatar";
+import { timeAgo } from "@/lib/utils";
+import PresenceAvatar from "../presence-avatar";
 type Props = {
   message: MessageDto;
   currentUserId: string;
@@ -19,19 +20,23 @@ export default function MessageBox({ message, currentUserId }: Props) {
 
   function renderAvatar() {
     return (
-      <Avatar
-        name={message.senderName}
-        className="self-end"
-        src={message.senderImage || "/images/user.png"}
-      />
+      <div className="self-end">
+        <PresenceAvatar
+          userId={message.senderId}
+          src={message.senderImage || "/images/user.png"}
+        />
+      </div>
     );
   }
 
-  const messageContentclasses = clsx("flex flex-col w-full lg:w-[50%] px-3 py-1", {
-    "rounded-l-xl rounded-tr-xl text-white bg-blue-100": isCurrentUserSender,
-    "rounded-r-xl rounded-tl-xl border-gray-200 bg-green-100":
-      !isCurrentUserSender,
-  });
+  const messageContentclasses = clsx(
+    "flex flex-col w-full lg:w-[50%] px-3 py-1",
+    {
+      "rounded-l-xl rounded-tr-xl text-white bg-blue-100": isCurrentUserSender,
+      "rounded-r-xl rounded-tl-xl border-gray-200 bg-green-100":
+        !isCurrentUserSender,
+    }
+  );
 
   function renderMessageHeader() {
     return (
@@ -43,7 +48,7 @@ export default function MessageBox({ message, currentUserId }: Props) {
         >
           {message.dateRead && message.recipientId !== currentUserId ? (
             <span className="text-xs text-black text-italic hidden sm:block">
-              (Read 4 mins ago)
+              (Read {timeAgo(message.dateRead)})
             </span>
           ) : (
             <div></div>

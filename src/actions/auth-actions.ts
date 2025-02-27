@@ -8,6 +8,7 @@ import { User } from "@prisma/client";
 import { LoginSchema } from "@/lib/schemas/login-schema";
 import { auth, signIn, signOut } from "@/auth";
 import { AuthError } from "next-auth";
+import { error } from "console";
 
 export async function signOutUserAction() {
   await signOut({ redirectTo: '/' })
@@ -16,7 +17,7 @@ export async function signOutUserAction() {
 
 export async function signInUser(data: LoginSchema): Promise<ActionResult<string>> {
   try {
-    const result = await signIn('credentials', {
+    await signIn('credentials', {
       email: data.email,
       password: data.password,
       redirect: false
@@ -24,7 +25,6 @@ export async function signInUser(data: LoginSchema): Promise<ActionResult<string
 
     return { status: 'success', data: 'Login Successful' }
   } catch (error) {
-    console.log(error)
     if (error instanceof AuthError) {
       switch (error.type) {
         case 'CredentialsSignin':
@@ -79,7 +79,6 @@ export async function registerUserAction(data: RegisterSchema): Promise<ActionRe
 
     return { status: 'success', data: user }
   } catch (error) {
-    console.log(error)
     return { status: 'error', error: 'Something went wrong' }
   }
 }

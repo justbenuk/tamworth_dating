@@ -1,4 +1,3 @@
-import { Message } from '@prisma/client';
 import { formatShortDateTime } from './utils';
 import { MessageWithSenderRecipient } from '@/types.index';
 
