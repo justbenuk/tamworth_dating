@@ -2,11 +2,14 @@ import { fetchCurrentUserLikeIds } from "@/actions/like-actions"
 import { getMembersAction } from "@/actions/member-actions"
 import MemberItem from "@/components/members/members-item"
 import PageContainer from "@/components/page-container"
+import PaginationComponent from "@/components/pagination/pagination-component"
+import { UserFilters } from "@/types.index"
 
-export default async function MembersPage() {
+export default async function MembersPage({ searchParams }: { searchParams: UserFilters }) {
+  const UserFilters = await searchParams
 
   //get all the members 
-  const members = await getMembersAction()
+  const members = await getMembersAction(UserFilters)
   const likeIds = await fetchCurrentUserLikeIds()
 
   return (
@@ -16,6 +19,7 @@ export default async function MembersPage() {
           <MemberItem member={member} key={member.id} likeIds={likeIds} />
         ))}
       </div>
+      <PaginationComponent />
     </PageContainer>
   )
 }

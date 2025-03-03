@@ -56,7 +56,7 @@ export default function MessageTabs({ messages }: Props) {
               <LoadingComponent />
             ) : (
               <>
-                <MessageTable messages={messages} />
+                <MessageTable initialMessages={messages} />
               </>
             )}
           </Tab>

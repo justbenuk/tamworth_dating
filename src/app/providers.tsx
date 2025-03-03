@@ -1,4 +1,5 @@
 "use client";
+import useFilterStore from "@/hooks/use-filter-store";
 import { useNotificationChannel } from "@/hooks/use-notification-channel";
 import { usePresenceChannel } from "@/hooks/usePressenceChannel";
 import { HeroUIProvider } from "@heroui/react";
@@ -13,6 +14,7 @@ type ProviderProps = {
 export default function Providers({ children, userId }: ProviderProps) {
   usePresenceChannel();
   useNotificationChannel(userId)
+  useFilterStore()
   return (
     <HeroUIProvider>
       <ToastContainer

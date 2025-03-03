@@ -2,7 +2,11 @@
 import { db } from "@/lib/db"
 import { auth } from "@/auth"
 import { Photo } from "@prisma/client"
-export async function getMembersAction() {
+import { UserFilters } from "@/types.index"
+import { addYears } from "date-fns"
+import { getAuthUserId } from "./auth-actions"
+
+export async function getMembersAction(searchParams: UserFilters) {
 
   //get the current logged in user  
   const session = await auth()
@@ -10,18 +14,33 @@ export async function getMembersAction() {
   //check if we have a session available 
   if (!session?.user) return null
 
+  const ageRange = searchParams?.ageRange?.toString().split(',') || [18, 100]
+
+  const currentDate = new Date()
+  const minDob = addYears(currentDate, -ageRange[1] - 1)
+  const maxDob = addYears(currentDate, -ageRange[0])
+
+  const orderBySelector = searchParams?.orderBy || 'updated'
+  const selectedGender = searchParams?.gender?.toString()?.split(',') || ['male', 'female']
+
   //get the users minus the current logged in user
   try {
     return db.member.findMany({
       where: {
+        AND: [
+          { dateOfBirth: { gte: minDob } },
+          { dateOfBirth: { lte: maxDob } },
+          { gender: { in: selectedGender } }
+        ],
         NOT: {
           userId: session.user.id
         }
-      }
+      },
+      orderBy: { [orderBySelector]: 'desc' }
     })
 
   } catch (error) {
-    throw new Error('Something went wrong')
+    throw error
   }
 }
 
@@ -33,7 +52,7 @@ export async function getMemberByIdAction(userId: string) {
       }
     })
   } catch (error) {
-    throw new Error('Somethign went wrong')
+    throw error
   }
 }
 
@@ -49,7 +68,21 @@ export async function getMembersPhotosByIdAction(userId: string) {
     return member.photos.map(p => p) as Photo[]
 
   } catch (error) {
-    throw new Error('Something went wrong')
+    throw error
   }
 
+}
+
+export async function updatesLastActive() {
+  const userId = await getAuthUserId()
+
+  try {
+    return db.member.update({
+      where: { userId },
+      data: { updated: new Date() }
+    })
+
+  } catch (error) {
+    throw error
+  }
 }

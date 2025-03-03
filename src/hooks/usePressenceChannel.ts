@@ -3,6 +3,7 @@ import usePresenceStore from './use-pressence-store'
 import { Channel, Members } from 'pusher-js'
 import { pusherClient } from '@/lib/pusher'
 import { useShallow } from 'zustand/shallow'
+import { updatesLastActive } from '@/actions/member-actions'
 
 export const usePresenceChannel = () => {
   const { set, add, remove } = usePresenceStore(
@@ -31,15 +32,16 @@ export const usePresenceChannel = () => {
     if (!channelRef.current) {
       channelRef.current = pusherClient.subscribe('presence-nm')
 
-      channelRef.current.bind('pusher:subscription_succeeded', (members: Members) => {
+      channelRef.current.bind('pusher:subscription_succeeded', async (members: Members) => {
         handleSetMembers(Object.keys(members.members))
+        await updatesLastActive()
       })
 
-      channelRef.current.bind('pusher:member_added', (member: {id: string}) => {
+      channelRef.current.bind('pusher:member_added', (member: { id: string }) => {
         handleAddMember(member.id)
       })
 
-      channelRef.current.bind('pusher:member_removed', (member: {id: string}) => {
+      channelRef.current.bind('pusher:member_removed', (member: { id: string }) => {
         handelRemoveMember(member.id)
       })
     }
@@ -47,7 +49,7 @@ export const usePresenceChannel = () => {
     return () => {
       if (channelRef.current && channelRef.current.subscribed) {
         channelRef.current.unsubscribe()
-        channelRef.current.unbind_all
+        channelRef.current.unbind_all()
       }
     }
   }, [handelRemoveMember, handleAddMember, handleSetMembers])

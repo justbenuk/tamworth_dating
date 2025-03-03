@@ -10,10 +10,10 @@ type MessageWithSenderRecipient = Prisma.MessageGetPayload<{
     created: true
     dateRead: true
     sender: {
-      select: {userId, name, image}
+      select: { userId, name, image }
     },
     recipient: {
-      select: {userId, name, image}
+      select: { userId, name, image }
     }
   }
 }>
@@ -29,4 +29,10 @@ type MessageDto = {
   recipientId?: string
   recipientName?: string
   recipientImage?: string | null
+}
+
+type UserFilters = {
+  ageRange: number[]
+  orderBy: string
+  gender: string[]
 }
