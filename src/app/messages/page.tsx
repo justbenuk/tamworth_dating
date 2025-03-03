@@ -10,8 +10,6 @@ export default async function MessagesPage({
   const { container } = await searchParams;
   const messages = await getMessagesByContainer(container);
 
-  console.log(searchParams.container)
-
   return (
     <PageContainer>
       <MessageTabs messages={messages} />
