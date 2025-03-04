@@ -5,7 +5,7 @@ import NavLink from "./nav-link";
 import { auth } from "@/auth";
 import UserMenu from "./user-menu";
 import { FaUserFriends } from "react-icons/fa";
-import Filters from "../filter/filters";
+import FiltersWrapper from "./filters-wrapper";
 
 export default async function TopNav() {
   const session = await auth()
@@ -39,7 +39,7 @@ export default async function TopNav() {
           )}
         </NavbarContent>
       </Navbar >
-      <Filters />
+      <FiltersWrapper />
     </>
   )
 }

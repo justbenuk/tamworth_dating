@@ -30,7 +30,12 @@ export default function MessageTable({ initialMessages }: Props) {
             <TableRow key={item.id} className="cursor-pointer">
               {(columnKey) => (
                 <TableCell className={`${!item.dateRead && !isOutbox ? 'font-semibold' : ''}`}>
-                  <MessageTableCell item={item} columnKey={columnKey as string} isOutbox={isOutbox} deleteMessage={deleteMessage} isDeleting={isDeleting.loading && isDeleting.id === item.id} />
+                  <MessageTableCell
+                    item={item}
+                    columnKey={columnKey as string}
+                    isOutbox={isOutbox}
+                    deleteMessage={deleteMessage}
+                    isDeleting={isDeleting.loading && isDeleting.id === item.id} />
                 </TableCell>
               )}
             </TableRow>

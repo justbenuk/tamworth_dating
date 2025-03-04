@@ -2,15 +2,12 @@
 import { Button } from "@heroui/button"
 import { Select, SelectItem } from "@heroui/select"
 import { Slider } from "@heroui/slider"
-import { usePathname } from "next/navigation"
 import { useFilters } from "@/hooks/use-filters"
 
 export default function Filters() {
-  const pathname = usePathname()
   const { genderList, orderByList, filters, selectAge, selectGender, selectOrder } = useFilters()
 
 
-  if (pathname !== '/members') return null
 
   return (
     <div className="shadow-md py-2 bg-gray-100">
@@ -23,17 +20,34 @@ export default function Filters() {
               key={value}
               size="sm"
               isIconOnly
-              color={filters.gender.includes(value) ? 'secondary' : 'default'}
+              className={filters.gender.includes(value) ? 'bg-red-500 text-white' : 'bg-gray-400'}
               onPress={() => selectGender(value)} >
               <Icon size={24} />
             </Button>
           ))}
         </div>
         <div className="flex flex-row items-center gap-2 w-1/4">
-          <Slider label='Age range' color="secondary" size="sm" minValue={18} maxValue={100} defaultValue={filters.ageRange} onChangeEnd={(value) => selectAge(value as number[])} />
+          <Slider
+            label='Age range'
+            classNames={{
+              filler: 'bg-red-500',
+              thumb: 'bg-red-500'
+            }}
+            size="sm"
+            minValue={18}
+            maxValue={100}
+            defaultValue={filters.ageRange}
+            onChangeEnd={(value) => selectAge(value as number[])} />
         </div>
         <div className="w-1/4">
-          <Select size="sm" fullWidth label="Order by" variant="bordered" color="secondary" aria-label="Order by selector" selectedKeys={new Set([filters.orderBy])} onSelectionChange={selectOrder}>
+          <Select
+            size="sm"
+            fullWidth
+            label="Order by"
+            variant="bordered"
+            aria-label="Order by selector"
+            selectedKeys={new Set([filters.orderBy])}
+            onSelectionChange={selectOrder}>
             {orderByList.map(item => (
               <SelectItem key={item.value}>{item.label}</SelectItem>
             ))}
