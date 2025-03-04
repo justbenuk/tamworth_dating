@@ -4,13 +4,13 @@ import EmptyState from "@/components/empty-state"
 import MemberItem from "@/components/members/members-item"
 import PageContainer from "@/components/page-container"
 import PaginationComponent from "@/components/pagination/pagination-component"
-import { UserFilters } from "@/types.index"
+import { getMemberPrams } from "@/types.index"
 
-export default async function MembersPage({ searchParams }: { searchParams: UserFilters }) {
+export default async function MembersPage({ searchParams }: { searchParams: getMemberPrams }) {
   const UserFilters = await searchParams
 
   //get all the members 
-  const members = await getMembersAction(UserFilters)
+  const { items: members, totalCount } = await getMembersAction(UserFilters)
   const likeIds = await fetchCurrentUserLikeIds()
 
   return (
@@ -24,7 +24,7 @@ export default async function MembersPage({ searchParams }: { searchParams: User
               <MemberItem member={member} key={member.id} likeIds={likeIds} />
             ))}
           </div>
-          <PaginationComponent />
+          <PaginationComponent totalCount={totalCount} />
         </>
       )
       }

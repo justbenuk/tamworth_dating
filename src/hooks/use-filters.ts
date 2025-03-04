@@ -5,6 +5,8 @@ import { FaMale, FaFemale } from "react-icons/fa"
 import useFilterStore from "./use-filter-store"
 import { useEffect } from "react"
 import { Selection } from "@heroui/react"
+import usePaginationStore from "./use-pagination-store"
+import { useShallow } from "zustand/shallow"
 
 export const useFilters = () => {
   const pathname = usePathname()
@@ -22,6 +24,13 @@ export const useFilters = () => {
 
   const { filters, setFilters } = useFilterStore()
 
+  const { pageNumber, pageSize } = usePaginationStore(
+    useShallow(state => ({
+      pageNumber: state.pagination.pageNumber,
+      pageSize: state.pagination.pageSize,
+    })
+    ))
+
   const { gender, ageRange, orderBy } = filters
 
   useEffect(() => {
@@ -29,9 +38,12 @@ export const useFilters = () => {
     if (gender) searchparams.set('gender', gender.join(','))
     if (ageRange) searchparams.set('ageRange', ageRange.toString())
     if (orderBy) searchparams.set('orderBy', orderBy)
+    if (pageSize) searchparams.set('pageSize', pageSize.toString())
+    if (pageNumber) searchparams.set('pageNumber', pageNumber.toString())
+
 
     router.replace(`${pathname}?${searchparams}`)
-  }, [ageRange, gender, orderBy, pathname, router])
+  }, [ageRange, gender, orderBy, pathname, router, pageNumber, pageSize])
 
 
   const handleAgeSelect = (value: number[]) => {
